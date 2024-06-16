@@ -16,7 +16,7 @@ module.exports = {
     trustLevel: 0,
     dm_permission: 1,
   },
-  async execute(interaction) {
+  async execute(interaction, bot, config, command) {
     const term = interaction.options.getString('term');
     const query = new URLSearchParams({ term });
     const dictResult = await request(`https://api.urbandictionary.com/v0/define?${query}`);
@@ -27,7 +27,7 @@ module.exports = {
     const [answer] = list;
     console.log(answer)
     const embed = new EmbedBuilder()
-                  .setColor("#00FFFF")
+                  .setColor(`${config.colors.commands.embed}`)
                   .setTitle(answer.word)
                   .setURL(answer.permalink)
                   .setDescription(`Author: ${answer.author}`)

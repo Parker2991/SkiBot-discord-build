@@ -12,7 +12,7 @@ function command_manager (bot, config) {
      for (const file of commandFiles) {
         const filePath = path.join(commandsPath, file);
         const command = require(filePath);
-        try { 
+        try {
            if (command.data instanceof SlashCommandBuilder) {
              bot.commands.set(command.data.name, command);
           } else {
@@ -49,6 +49,12 @@ function command_manager (bot, config) {
               }
             }
           }
+        } if (command.data.trustLevel === 2) {
+          const isOwner = interaction.user.username === config.users.owner
+          if (!isOwner) throw new CommandError('You are not the owner!');
+          else return command.execute(interaction, config, bot, command);
+        } if (command.data.trustLevel === 3) {
+          throw new CommandError('This command has been disabled');
         } else {
           return await command.execute(interaction, bot, config, command)
         }
