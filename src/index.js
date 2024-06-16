@@ -2,7 +2,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { load } = require('js-yaml');
 const { Client, Collection, GatewayIntentBits, SlashCommandBuilder, Partials, Routes } = require('discord.js');
-const loadEvents = require('./util/loadEvents');
 const loadModules = require('./util/loadModules');
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages], partials: [ Partials.Channel, Partials.Message] });
 
