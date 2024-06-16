@@ -6,7 +6,7 @@ const path = require('node:path');
 const config = load(fs.readFileSync('config.yml', 'utf8'));
 const commands = [];
 // Grab all the command folders from the commands directory you created earlier
-const foldersPath = path.join(__dirname, 'commands');
+const foldersPath = path.join(__dirname, 'src/commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
@@ -31,6 +31,7 @@ for (const folder of commandFolders) {
 //                 command.data['integration_types'] = [1] //setDMPermission
                  commands.push(command.data);
                  console.log(command.data)
+                 console.log(command.data.options)
                 }
                 } catch (e) {
                   console.log(e.stack)

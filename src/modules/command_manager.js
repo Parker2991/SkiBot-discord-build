@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Collection, Events, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const CommandError = require('../util/CommandError');
 function command_manager (bot, config) {
   bot.commands = new Collection();
   const foldersPath = path.join(__dirname, '../commands');
@@ -41,12 +42,10 @@ function command_manager (bot, config) {
                 const hasRole = interaction?.member?.roles?.cache?.some(role => role.name === trustedRoles || role.name === config.roles.owner)
                 const trusted = interaction.user.username === trustedUser;
                 const owner = interaction.user.username === config.users.owner
-                if (!hasRole && interaction.member.roles.cache !== undefined && interaction.member.roles.cache !== null) throw new Error('You are not trusted or the owner!');
+                if (!hasRole && interaction.member.roles.cache !== undefined && interaction.member.roles.cache !== null) throw new CommandError('You are not trusted or the owner!');
                 else if (hasRole && interaction.member.roles.cache !== undefined && interaction.member.roles.cache !== null) return command.execute(interaction, config, bot);
-                else if (interaction.user.username !== trustedUser/* && interaction.user.username !== config.users.owner*/  /*&& interaction.member.roles.cache === undefined && interaction.member.roles.cache === null*/) throw new Error('You are not trusted or the owner!');
-                else if (interaction.user.username === trustedUser /*&& interaction.user.username === config.users.owner*//*&& interaction.member.roles.cache === undefined && interaction.member.roles.cache === null*/) return command.execute(interaction, config, bot, command);
-//                if (!hasRole) throw new Error('You are not trusted or the owner!')
-              
+                else if (interaction.user.username !== trustedUser) throw new CommandError('You are not trusted or the owner!');
+                else if (interaction.user.username === trustedUser) return command.execute(interaction, config, bot, command);
               }
             }
           }
@@ -58,16 +57,15 @@ function command_manager (bot, config) {
         const ErrorMessage = new EmbedBuilder()
                                  .setColor(`${config.colors.commands.error}`)
                                  .setTitle(`${command.data.name} Command`)
-                                 .setDescription(`${error.message}`)
+                                 .setDescription(`${error._message}`)
         const ErrorStack = new EmbedBuilder()
                                  .setColor(`${config.colors.commands.error}`)
                                  .setTitle(`${command.data.name} Command}`)
                                  .setDescription(`${error.stack}`)
-        if (error instanceof Error)
+        if (error instanceof CommandError)
         await interaction.reply({ embeds: [ErrorMessage] });
         else interaction.reply({ embeds: [ErrorStack] });
       }
   });
 }
-
 module.exports = command_manager;

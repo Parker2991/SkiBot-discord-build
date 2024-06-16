@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-//setDMPermission
+
 module.exports = {
-//    trustLevel: 1,
     data: {
         name: 'validate',
         description: ':3',
@@ -28,14 +27,11 @@ module.exports = {
                 await interaction?.reply({ content: 'valid trusted user' })
               } else if (interaction?.user?.username === config?.users?.owner && interaction.member.roles.cache === undefined || interaction.member.roles.cache === null) {
                 await interaction.reply({ content: 'valid owner user' })
-//                interaction.followUp('e')
               }
             }
           }
         } catch (e) {
           console.log(e.stack)
         }
-// interaction.member.roles.cache !== undefined || interaction.member.roles.cache === null
-// interaction.member.roles.cache === undefined || interaction.member.roles.cache === null
       }
 }

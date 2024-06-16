@@ -49,7 +49,7 @@ module.exports = {
 	   if (interaction.options.getSubcommand() === 'server') {
              await interaction.reply(`Hostname \u203a ${os.hostname()}\nWorking Directory \u203a ${process.mainModule.path}\nOS \u203a ${os.platform()}\nKernal Version \u203a ${os.release()}\ncores \u203a ${os.cpus().length}\nCPU \u203a ${os.cpus()[0].model}\nServer Free memory ${Math.floor( os.freemem() / 1048576 )} MiB / ${Math.floor(os.totalmem() / 1048576)} MiB\nDevice uptime \u203a ${format(os.uptime())}\nNode version \u203a ${process.version}`)
            } else if (interaction.options.getSubcommand() === 'invite') {
-              try { 
+              try {
                  let inviteEmbed = new EmbedBuilder()
                     .setColor(`#000000`)
                     .setTitle(`Invite Subcommand`)
