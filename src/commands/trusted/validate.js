@@ -1,5 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
-
 module.exports = {
     data: {
         name: 'validate',
@@ -15,7 +13,9 @@ module.exports = {
           2,
         ]
       },
-      async execute(interaction, config) {
+      async execute(context) {
+        const interaction = context.interaction;
+        const config = context.config;
         try {
           for (const trustedRoles of config?.roles?.trusted) {
             for (const trustedUser of config?.users?.trusted) {

@@ -3,7 +3,8 @@ const path = require('node:path');
 const { Collection, Events, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const CommandError = require('../util/CommandError');
 function command_manager (bot, config) {
-  bot.commands = new Collection();
+  bot.commandManager = new Collection();
+  bot.commandManager.commandList = []
   const foldersPath = path.join(__dirname, '../commands');
   const commandFolders = fs.readdirSync(foldersPath);
   for (const folder of commandFolders) {
@@ -13,11 +14,14 @@ function command_manager (bot, config) {
         const filePath = path.join(commandsPath, file);
         const command = require(filePath);
         try {
+           let commandList = [];
            if (command.data instanceof SlashCommandBuilder) {
-             bot.commands.set(command.data.name, command);
+             bot.commandManager.set(command.data.name, command);
+             bot.commandManager.commandList.push(command)
           } else {
-             bot.commands.set(command.data.name, command);
-             bot.commands.set(command.data.trustLevel)
+             bot.commandManager.set(command.data.name, command);
+             bot.commandManager.commandList.push(command);
+//             bot.commandManager.set(command.data.trustLevel)
           }
         } catch (e) {
           console.error(`Could not load command ${file}`)
@@ -28,9 +32,8 @@ function command_manager (bot, config) {
   bot.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
       try {
-        command = interaction.client.commands.get(interaction.commandName);
-        console.log((interaction.user.username));
-        console.log(config)
+        command = bot.commandManager.get(interaction.commandName);
+        console.log(`User: ${interaction.user.username}`);
         if (!command) {
           console.error(`No command matching ${interaction.commandName} was found.`);
           return;
@@ -43,31 +46,31 @@ function command_manager (bot, config) {
                 const trusted = interaction.user.username === trustedUser;
                 const owner = interaction.user.username === config.users.owner
                 if (!hasRole && interaction.member.roles.cache !== undefined && interaction.member.roles.cache !== null) throw new CommandError('You are not trusted or the owner!');
-                else if (hasRole && interaction.member.roles.cache !== undefined && interaction.member.roles.cache !== null) return command.execute(interaction, config, bot);
+                else if (hasRole && interaction.member.roles.cache !== undefined && interaction.member.roles.cache !== null) return command.execute({ interaction, config, bot, command });
                 else if (interaction.user.username !== trustedUser) throw new CommandError('You are not trusted or the owner!');
-                else if (interaction.user.username === trustedUser) return command.execute(interaction, config, bot, command);
+                else if (interaction.user.username === trustedUser) return command.execute({ interaction, config, bot, command });
               }
             }
           }
         } if (command.data.trustLevel === 2) {
           const isOwner = interaction.user.username === config.users.owner
           if (!isOwner) throw new CommandError('You are not the owner!');
-          else return command.execute(interaction, config, bot, command);
+          else return command.execute({ interaction, config, bot, command });
         } if (command.data.trustLevel === 3) {
           throw new CommandError('This command has been disabled');
         } else {
-          return await command.execute(interaction, bot, config, command)
+          return await command.execute({ interaction, bot, config, command })
         }
       } catch (error) {
         console.error(error.stack);
         const ErrorMessage = new EmbedBuilder()
                                  .setColor(`${config.colors.commands.error}`)
                                  .setTitle(`${command.data.name} Command`)
-                                 .setDescription(`${error._message}`)
+                                 .setDescription('```' + error._message + '```')
         const ErrorStack = new EmbedBuilder()
                                  .setColor(`${config.colors.commands.error}`)
                                  .setTitle(`${command.data.name} Command}`)
-                                 .setDescription(`${error.stack}`)
+                                 .setDescription('```' + error.stack + '```')
         if (error instanceof CommandError)
         await interaction.reply({ embeds: [ErrorMessage] });
         else interaction.reply({ embeds: [ErrorStack] });

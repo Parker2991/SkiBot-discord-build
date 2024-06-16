@@ -16,7 +16,11 @@ module.exports = {
     trustLevel: 0,
     dm_permission: 1,
   },
-  async execute(interaction, bot, config, command) {
+  async execute(context) {
+    const interaction = context.interaction;
+    const bot = context.bot;
+    const config = context.config;
+    const command = context.command;
     const term = interaction.options.getString('term');
     const query = new URLSearchParams({ term });
     const dictResult = await request(`https://api.urbandictionary.com/v0/define?${query}`);

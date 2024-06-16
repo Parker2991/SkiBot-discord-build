@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
   data: {
     name: 'permtest',
@@ -16,7 +15,8 @@ module.exports = {
       2,
     ]
   },
-  execute(interaction, bot, config, command) {
+  execute(context) {
+    const interaction = context.interaction;
     interaction.reply('meow :3')
   }
 }

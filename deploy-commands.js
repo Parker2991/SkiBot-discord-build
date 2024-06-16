@@ -45,6 +45,6 @@ rest.put(Routes.applicationCommands(config.client.clientId), {
     );
     console.log(`Successfully reloaded ${data.length} application (/) commands.`);
   } catch (error) {
-    console.error(error);
+    console.error(error.stack);
   }
 })();

@@ -1,5 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
-
 module.exports = {
   data: {
     options: [
@@ -25,7 +23,8 @@ module.exports = {
       2,
     ]
   },
-  execute(interaction, bot, config, command) {
+  execute(context) {
+    const interaction = context.interaction;
     interaction.reply(interaction.options.getString('input'));
   }
 }
