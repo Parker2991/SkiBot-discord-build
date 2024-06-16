@@ -1,0 +1,25 @@
+client:
+  token: "discord bot token here"
+  clientId: "discord client id here"
+  invite: "https://discord.gg/GCKtG4erux"
+  presence:
+    name: "amogus"
+    type: "4"
+    status: "dnd"
+
+roles:
+  trusted:
+    # trusted role array here ™ 
+    - "" 
+  owner: "owner role here ™"
+
+users:
+  trusted:
+    # trusted user array here ™
+    - ""
+  owner: "owner username here ™"
+
+colors:
+  commands:
+    error: "#FF0000"
+    embed: "#000000"
