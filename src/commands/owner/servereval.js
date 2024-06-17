@@ -36,42 +36,22 @@ module.exports = {
       const Embed = new EmbedBuilder()
               .setColor(`${config.colors.commands.embed}`)
               .setTitle(`${this.data.name} command`)
-//              .setDescription('e')
               .addFields(
                  { name: 'Code Output \u203a', value: `\`\`\`js\n${trim(util.inspect(eval(interaction.options.getString('code'))), 1015)}\`\`\`` },
-                 { name: 'Code Input \u203a', value: `${interaction.options.getString('code')}` }, //`\`\`\`${error}\`\`\``
-//                 { name: 'e', value: 'e' }
+                 { name: 'Code Input \u203a', value: `\`\`\`js\n${interaction.options.getString('code')}\`\`\`` },
               )
-/*              .addFields(
-                  { name: `${interaction.options.getString('code')}`, value: '\u200b' },
-                  { name: 'e', value: 'e' },
-                  { name: '```js\n' + util.inspect(eval(interaction.options.getString('code'))) + '```', value: '\u200b' }
-              )*/
       interaction.reply({ embeds: [Embed] })
     } catch (e) {
-//      throw new CommandError(e.toString())
       const Embed = new EmbedBuilder()
               .setColor(`${config.colors.commands.error}`)
               .setTitle(`${this.data.name} command`)
-//              .setDescription('e')
+
               .addFields(
                  { name: 'Error \u203a', value: `${e.toString()}` },
-                 { name: 'Code Input \u203a', value: `${interaction.options.getString('code')}` }, //`\`\`\`${error}\`\`\``
-//                 { name: 'e', value: 'e' }
+                 { name: 'Code Input \u203a', value: `${interaction.options.getString('code')}` },
               )
       interaction.reply({ embeds: [Embed] })
     }
   }
 }
-/*
-const Embed = new EmbedBuilder()
-              .setColor(`${bot.Commands.colors.discord.embed}`)
-              .setTitle(`${this.name} Command`)
-              .setDescription(`${command.name} info`)
-              .addFields(
-              // { name: '', value: `${bot.Discord.commandPrefix + command.name}` }
-               {name: `${bot.discord.commandPrefix}${command.name} (Aliases: ${command.aliases}) \u203a ${command.description}`, value: `\u200b`,inline:false},
-               { name: `Trust Level \u203a ${command.trustLevel}`,value:'\u200b'},
-               { name: `Usage \u203a ${bot.discord.commandPrefix}${command.name} ${command.usage}`,value:'\u200b'},
-              )
-*/
+

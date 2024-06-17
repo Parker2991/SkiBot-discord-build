@@ -35,6 +35,7 @@ rest.put(Routes.applicationCommands(config.client.clientId), {
   .then(() => console.log('Successfully deleted all application commands.'))
   .catch(console.error);
 
+
 (async () => {
   try {
     console.log(`Started refreshing ${commands.length} application (/) commands.`);
@@ -43,6 +44,7 @@ rest.put(Routes.applicationCommands(config.client.clientId), {
         body: commands
       },
     );
+    data
     console.log(`Successfully reloaded ${data.length} application (/) commands.`);
   } catch (error) {
     console.error(error.stack);
