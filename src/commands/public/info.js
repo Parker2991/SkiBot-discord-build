@@ -19,7 +19,7 @@ module.exports = {
       {
         type: 3,
         name: 'options',
-        description: 'error options',
+        description: 'info options',
         required: true,
         choices: [
           {
@@ -36,12 +36,18 @@ module.exports = {
             name: 'uptime',
             value: 'uptime',
             type: 1,
+          },
+          {
+            name: "version",
+            value: "version",
+            type: 1,
           }
         ]
       }
     ],
     name: 'info',
     description: 'bot info',
+    trustLevel: 0,
     integration_types: [
       0,
       1,
@@ -58,7 +64,12 @@ module.exports = {
     const config = context.config;
     const command = context.command
     if (interaction.options.getString('options') === 'server') {
-      await interaction.reply(`Hostname \u203a ${os.hostname()}\nWorking Directory \u203a ${process.mainModule.path}\nOS \u203a ${os.platform()}\nKernal Version \u203a ${os.release()}\ncores \u203a ${os.cpus().length}\nCPU \u203a ${os.cpus()[0].model}\nServer Free memory ${Math.floor( os.freemem() / 1048576 )} MiB / ${Math.floor(os.totalmem() / 1048576)} MiB\nDevice uptime \u203a ${format(os.uptime())}\nNode version \u203a ${process.version}`)
+//      await interaction.reply(`Hostname \u203a ${os.hostname()}\nWorking Directory \u203a ${process.mainModule.path}\nOS \u203a ${os.platform()}\nKernal Version \u203a ${os.release()}\ncores \u203a ${os.cpus().length}\nCPU \u203a ${os.cpus()[0].model}\nServer Free memory ${Math.floor( os.freemem() / 1048576 )} MiB / ${Math.floor(os.totalmem() / 1048576)} MiB\nDevice uptime \u203a ${format(os.uptime())}\nNode version \u203a ${process.version}`)
+      const Embed = new EmbedBuilder()
+              .setColor(`${config.colors.commands.embed}`)
+              .setTitle(`${this.data.name} command}`)
+              .setDescription(`Hostname \u203a ${os.hostname()}\nWorking Directory \u203a ${process.mainModule.path}\nOS \u203a ${os.platform()}\nKernal Version \u203a ${os.release()}\ncores \u203a ${os.cpus().length}\nCPU \u203a ${os.cpus()[0].model}\nServer Free memory ${Math.floor( os.freemem() / 1048576 )} MiB / ${Math.floor(os.totalmem() / 1048576)} MiB\nDevice uptime \u203a ${format(os.uptime())}\nNode version \u203a ${process.version}`)
+      await interaction.reply({ embeds: [Embed] })
     } else if (interaction.options.getString('options') === 'invite') {
       let inviteEmbed = new EmbedBuilder()
             .setColor(`${config.colors.commands.embed}`)
@@ -77,6 +88,8 @@ module.exports = {
               .setTitle(`${this.data.name} command`)
               .setDescription(`${format(process.uptime())}`)
       await interaction.reply({ embeds: [Embed] })
+    } else if (interaction.options.getString('options') === 'version') {
+      await interaction.reply(`${process.env["buildstring"]}`)
     }
   },
 };

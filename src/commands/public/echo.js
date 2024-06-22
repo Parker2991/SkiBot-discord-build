@@ -17,7 +17,7 @@ module.exports = {
        0,
        1,
     ],
-    "context": [
+    context: [
       0,
       1,
       2,

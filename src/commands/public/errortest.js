@@ -23,6 +23,7 @@ module.exports = {
      ],
      name: "errortest",
      description: "test errors",
+     trustLevel: 0,
      integration_types: [
         0,
         1

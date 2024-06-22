@@ -20,12 +20,12 @@ try {
 }
 
 loadModules(bot, config);
-
+require("dotenv").config();
 bot.login(config.client.token);
 
 bot.on('ready', (ready) => {
   bot.user.setPresence({
-    activities: [{ name: `${config.client.presence.name}`, type: config.client.presence.type }],
+    activities: [{ name: `${config.client.presence.name}`, type: 4 }],
     status: `${config.client.presence.status}`
   });
   console.log(`Logged in as ${bot.user.tag}`)

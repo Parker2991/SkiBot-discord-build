@@ -28,13 +28,13 @@ for (const folder of commandFolders) {
 }
 
 const rest = new REST().setToken(config.client.token);
-
+/*
 rest.put(Routes.applicationCommands(config.client.clientId), {
     body: []
   })
   .then(() => console.log('Successfully deleted all application commands.'))
   .catch(console.error);
-
+*/
 
 (async () => {
   try {
@@ -50,3 +50,4 @@ rest.put(Routes.applicationCommands(config.client.clientId), {
     console.error(error.stack);
   }
 })();
+

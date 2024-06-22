@@ -16,16 +16,15 @@ function command_manager (bot, config) {
         try {
            let commandList = [];
            if (command.data instanceof SlashCommandBuilder) {
-             bot.commandManager.set(command.data.name, command);
-             bot.commandManager.commandList.push(command)
+             bot.commandManager.set(command.data.name.toJSON, command);
+             bot.commandManager.commandList.push(command);
           } else {
              bot.commandManager.set(command.data.name, command);
              bot.commandManager.commandList.push(command);
-//             bot.commandManager.set(command.data.trustLevel)
           }
         } catch (e) {
-          console.error(`Could not load command ${file}`)
-          console.error(e.stack)
+          console.error(`Could not load command ${file}`);
+          console.error(e.stack);
         }
      }
   }
@@ -33,7 +32,9 @@ function command_manager (bot, config) {
     if (!interaction.isChatInputCommand()) return;
       try {
         command = bot.commandManager.get(interaction.commandName);
-        console.log(`User: ${interaction.user.username}`);
+        console.log(`User: \x1b[0m\x1b[31m${interaction.user.username}\x1b[0m, Command: \x1b[0m\x1b[32m${command.data.name}\x1b[0m, Time: \x1b[0m\x1b[96m${new Date().toLocaleTimeString("en-US", { timeZone: "America/CHICAGO"})}\x1b[0m, Date: \x1b[0m\x1b[33m${new Date().toLocaleDateString("en-US", { timeZone: "America/CHICAGO", })}\x1b[0m`);
+        // new Date().toLocaleTimeString("en-US", { timeZone: "America/CHICAGO", })} `,color:'#2b7589'},
+        // {text:`${new Date().toLocaleDateString("en-US", { timeZone: "America/CHICAGO", })
         if (!command) {
           console.error(`No command matching ${interaction.commandName} was found.`);
           return;
@@ -72,7 +73,7 @@ function command_manager (bot, config) {
                                  .setTitle(`${command.data.name} Command}`)
                                  .setDescription('```' + error.stack + '```')
         if (error instanceof CommandError)
-        await interaction.reply({ embeds: [ErrorMessage] });
+        interaction.reply({ embeds: [ErrorMessage] });
         else interaction.reply({ embeds: [ErrorStack] });
       }
   });
